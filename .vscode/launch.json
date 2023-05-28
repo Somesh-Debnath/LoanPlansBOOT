@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-LoanplansApplication<loanplans>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.somesh.loanplanmanagement.loanplans.LoanplansApplication",
+            "projectName": "loanplans",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
