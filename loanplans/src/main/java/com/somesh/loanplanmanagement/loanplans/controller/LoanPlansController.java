@@ -29,6 +29,9 @@ public class LoanPlansController {
     @GetMapping(path = "/loanplans", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<LoanPlans>> getAllLoanPlans() {
         List<LoanPlans> loanPlans = loanPlansService.getAllLoanPlans();
+        for(int i=0;i<loanPlans.size();i++) {
+            System.out.println(loanPlans.get(i).getPlanName());
+        }
         return new ResponseEntity<List<LoanPlans>>(loanPlans, HttpStatus.OK);
     }
 
@@ -40,7 +43,7 @@ public class LoanPlansController {
         return loanPlans;
     }
 
-    @PostMapping(path = "/loanplans", produces = { MediaType.APPLICATION_JSON_VALUE })
+    @PostMapping(path = "/loanplan", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<LoanPlans> createLoanPlans(LoanPlans loanPlans) {
         LoanPlans newLoanPlan = loanPlansService.createLoanPlan(loanPlans);
         return new ResponseEntity<LoanPlans>(newLoanPlan, HttpStatus.CREATED);

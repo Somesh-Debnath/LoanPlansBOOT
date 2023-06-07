@@ -19,7 +19,7 @@ public class BaseInterestRatesController {
     @Autowired
     private IBaseInterestRatesService baseInterestRatesService;
     
-    @GetMapping(path = "/baseinterestrates" , produces = { MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(path = "/interestrates" , produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<BaseInterestRates>> getAllBaseInterestRates() {
         List<BaseInterestRates> baseInterestRates = baseInterestRatesService.getAllBaseInterestRates();
         return new ResponseEntity<List<BaseInterestRates>>(baseInterestRates, HttpStatus.OK);
