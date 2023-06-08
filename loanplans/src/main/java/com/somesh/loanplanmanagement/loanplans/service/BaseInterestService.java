@@ -15,5 +15,9 @@ public class BaseInterestService implements IBaseInterestRatesService{
     public List<BaseInterestRates> getAllBaseInterestRates() {
        return baseInterestRatesRepository.findAll();
     }
+    @Override
+    public BaseInterestRates createBaseInterestRates(BaseInterestRates baseInterestRates) {
+        return baseInterestRatesRepository.save(baseInterestRates);
+    }
     
 }

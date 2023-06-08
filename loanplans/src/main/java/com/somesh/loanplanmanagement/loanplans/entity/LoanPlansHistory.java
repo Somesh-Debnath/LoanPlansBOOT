@@ -25,8 +25,8 @@ public class LoanPlansHistory {
     private String updateReason;
     private int LoanPlanId;
 
-    // @ManyToOne
-    // @JoinColumn(name = "LoanPlanId", insertable = false, updatable = false)
-    // private LoanPlans loanplans;
+    @ManyToOne
+    @JoinColumn(name = "LoanPlanId", insertable = false, updatable = false)
+    private LoanPlans loanplans;
 
 }

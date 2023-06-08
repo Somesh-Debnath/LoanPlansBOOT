@@ -29,7 +29,7 @@ public class LoanPlansService implements ILoanPlansService {
         loanPlanToUpdate.setEMI(loanPlan.getEMI());
         loanPlanToUpdate.setPlanValidity(loanPlan.getPlanValidity());
         loanPlanToUpdate.setPlanAddedOn(loanPlan.getPlanAddedOn());
-        loanPlanToUpdate.setBaseinterest_id(loanPlan.getBaseinterest_id());
+        //loanPlanToUpdate.setBaseinterest_id(loanPlan.getBaseinterest_id());
         return loanPlansRepository.save(loanPlanToUpdate);
 
     }
