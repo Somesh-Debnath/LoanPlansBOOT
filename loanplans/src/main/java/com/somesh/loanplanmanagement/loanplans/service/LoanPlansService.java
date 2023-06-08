@@ -36,6 +36,7 @@ public class LoanPlansService implements ILoanPlansService {
 
     @Override
     public Optional<LoanPlans> getLoanPlanById(int id) {
+
         return loanPlansRepository.findById(id);
     }
 
@@ -70,6 +71,16 @@ public class LoanPlansService implements ILoanPlansService {
 
     @Override
     public LoanPlans createLoanPlan(LoanPlans loanPlan) {
+        double totalPayable = 0.0;
+        double emi = 0.0;
+        BaseInterestRates baseInterestRates = loanPlan.getBaseinterestrates();
+        double interestAmount = calculateInterestAmount(loanPlan, baseInterestRates);
+        totalPayable = loanPlan.getPrincipalAmount() + interestAmount;
+        emi = totalPayable / loanPlan.getTenure();
+        loanPlan.setInterestAmount(interestAmount);
+        loanPlan.setTotalPayable(totalPayable);
+        loanPlan.setEMI(emi);
+
         return loanPlansRepository.save(loanPlan);
     }
 }
