@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.somesh.loanplanmanagement.loanplans.dto.BaseInterestRatesDto;
 import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.service.IBaseInterestRatesService;
 
@@ -28,8 +29,8 @@ public class BaseInterestRatesController {
     }
 
     @PostMapping(path = "/interestrate" , produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<BaseInterestRates> createBaseInterestRates(@RequestBody BaseInterestRates baseInterestRates) {
-        BaseInterestRates newBaseInterestRates = baseInterestRatesService.createBaseInterestRates(baseInterestRates);
-        return new ResponseEntity<BaseInterestRates>(newBaseInterestRates, HttpStatus.CREATED);
+    public ResponseEntity<BaseInterestRatesDto> createBaseInterestRates(@RequestBody BaseInterestRatesDto baseInterestRates) {
+        BaseInterestRatesDto newBaseInterestRates = baseInterestRatesService.createBaseInterestRates(baseInterestRates);
+        return new ResponseEntity<BaseInterestRatesDto>(newBaseInterestRates, HttpStatus.CREATED);
     }
 }

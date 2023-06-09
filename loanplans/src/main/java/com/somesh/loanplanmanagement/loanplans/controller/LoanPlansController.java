@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.somesh.loanplanmanagement.loanplans.dto.LoanPlansDto;
 import com.somesh.loanplanmanagement.loanplans.entity.LoanPlans;
 import com.somesh.loanplanmanagement.loanplans.exception.ResourceNotFoundException;
 import com.somesh.loanplanmanagement.loanplans.repository.LoanPlansRepository;
 import com.somesh.loanplanmanagement.loanplans.service.ILoanPlansService;
 
-
+import jakarta.validation.Valid;
 
 @RequestMapping("/api")
 @RestController
@@ -30,46 +31,29 @@ public class LoanPlansController {
     private LoanPlansRepository loanPlansRepository;
 
     @GetMapping(path = "/loanplans", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<List<LoanPlans>> getAllLoanPlans() {
-        List<LoanPlans> loanPlans = loanPlansService.getAllLoanPlans();
-        for(int i=0;i<loanPlans.size();i++) {
-            System.out.println(loanPlans.get(i).getPlanName());
-        }
-        return new ResponseEntity<List<LoanPlans>>(loanPlans, HttpStatus.OK);
+    public ResponseEntity<List<LoanPlansDto>> getAllLoanPlans() {
+        List<LoanPlansDto> loanPlans = loanPlansService.getAllLoanPlans();
+        return new ResponseEntity<List<LoanPlansDto>>(loanPlans, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/loanplans/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public LoanPlans findByLoanPlansIdFromDBWithException(@PathVariable int id) throws ResourceNotFoundException {
-        LoanPlans loanPlans = loanPlansService.getLoanPlanById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Loan Plan not found for this id :: " + id));
-        System.out.println(id);
+    @GetMapping(path = "/loanplans/{planid}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public LoanPlansDto findByLoanPlansIdFromDBWithException(@PathVariable int planid) throws ResourceNotFoundException {
+        LoanPlansDto loanPlans = loanPlansService.getLoanPlanById(planid)
+                .orElseThrow(() -> new ResourceNotFoundException("Loan Plan not found for this id :: " + planid));
         return loanPlans;
     }
 
     @PostMapping(path = "/loanplan", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<LoanPlans> createLoanPlans(@RequestBody LoanPlans loanPlans) {
-        LoanPlans newLoanPlan = loanPlansService.createLoanPlan(loanPlans);
-        return new ResponseEntity<LoanPlans>(newLoanPlan, HttpStatus.CREATED);
+    public ResponseEntity<LoanPlansDto> createLoanPlans( @RequestBody LoanPlansDto loanPlans) throws Exception {
+        LoanPlansDto loanPlan = loanPlansService.createLoanPlan(loanPlans);
+        return new ResponseEntity<LoanPlansDto>(loanPlan, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/loanplans/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<LoanPlans> updateLoanPlans(@PathVariable int id, LoanPlans loanPlans)
+    public ResponseEntity<LoanPlansDto> updateLoanPlans(@PathVariable int id, LoanPlansDto loanPlans)
             throws ResourceNotFoundException {
-        LoanPlans updatedLoanPlans = loanPlansService.getLoanPlanById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Loan Plan not found for this id :: " + id));
-        updatedLoanPlans.setPlanName(loanPlans.getPlanName());
-        updatedLoanPlans.setLoanTypeId(loanPlans.getLoanTypeId());
-        updatedLoanPlans.setPrincipalAmount(loanPlans.getPrincipalAmount());
-        updatedLoanPlans.setTenure(loanPlans.getTenure());
-        updatedLoanPlans.setInterestRate(loanPlans.getInterestRate());
-        updatedLoanPlans.setInterestAmount(loanPlans.getInterestAmount());
-        updatedLoanPlans.setTotalPayable(loanPlans.getTotalPayable());
-        updatedLoanPlans.setEMI(loanPlans.getEMI());
-        updatedLoanPlans.setPlanValidity(loanPlans.getPlanValidity());
-        updatedLoanPlans.setPlanAddedOn(loanPlans.getPlanAddedOn());
-        //updatedLoanPlans.setBaseinterest_id(loanPlans.getBaseinterest_id());
-        loanPlansRepository.save(updatedLoanPlans);
-        return new ResponseEntity<LoanPlans>(updatedLoanPlans, HttpStatus.OK);
+        LoanPlansDto updatedLoanPlans = loanPlansService.updateLoanPlan(loanPlans, id);
+        return new ResponseEntity<LoanPlansDto>(updatedLoanPlans, HttpStatus.OK);
     }
 
 }

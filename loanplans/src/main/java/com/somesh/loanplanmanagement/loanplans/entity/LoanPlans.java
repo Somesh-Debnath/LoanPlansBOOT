@@ -1,6 +1,6 @@
 package com.somesh.loanplanmanagement.loanplans.entity;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -54,10 +54,10 @@ public class LoanPlans {
     private float EMI;
 
     @Column(name = "PlanValidity" , columnDefinition = "date")
-    private Date PlanValidity;
+    private LocalDate PlanValidity;
 
     @Column(name = "PlanAddedOn" , columnDefinition = "date")
-    private Date PlanAddedOn;
+    private LocalDate PlanAddedOn;
 
 
     @ManyToOne

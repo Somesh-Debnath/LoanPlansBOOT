@@ -3,19 +3,24 @@ package com.somesh.loanplanmanagement.loanplans.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.JsonSerializable.Base;
+import com.somesh.loanplanmanagement.loanplans.dto.LoanPlansDto;
 import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.entity.LoanPlans;
+import com.somesh.loanplanmanagement.loanplans.exception.ResourceNotFoundException;
 
 public interface ILoanPlansService {
 
-    public LoanPlans createLoanPlan(LoanPlans loanPlan);
+    LoanPlansDto createLoanPlan(LoanPlansDto loanPlan) throws Exception;
 
-    public LoanPlans updateLoanPlan(LoanPlans loanPlan);
+    LoanPlansDto updateLoanPlan(LoanPlansDto loanPlan, Integer id) throws ResourceNotFoundException;
 
-    public Optional<LoanPlans> getLoanPlanById(int id);
+    Optional<LoanPlansDto> getLoanPlanById(int id) throws ResourceNotFoundException;
 
-    public List<LoanPlans> getAllLoanPlans();
+    List<LoanPlansDto> getAllLoanPlans();
 
-    public double calculateInterestAmount(LoanPlans loanPlan, BaseInterestRates baseInterestRates);
+    int calculateInterestAmount(LoanPlans loanPlan, BaseInterestRates baseInterestRates);
+
+    int calculateTotalPayable(LoanPlans loanPlan, BaseInterestRates baseInterestRates);
 
 }
