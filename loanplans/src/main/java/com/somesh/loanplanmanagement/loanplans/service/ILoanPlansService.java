@@ -11,13 +11,13 @@ import com.somesh.loanplanmanagement.loanplans.exception.ResourceNotFoundExcepti
 
 public interface ILoanPlansService {
 
-    LoanPlansDto createLoanPlan(LoanPlansDto loanPlan) throws Exception;
+    LoanPlans createLoanPlan(LoanPlans loanPlan);
 
-    LoanPlansDto updateLoanPlan(LoanPlansDto loanPlan, Integer id) throws ResourceNotFoundException;
+    LoanPlans updateLoanPlan(LoanPlans loanPlan, Integer id) throws ResourceNotFoundException;
 
-    Optional<LoanPlansDto> getLoanPlanById(int id) throws ResourceNotFoundException;
+    Optional<LoanPlans> getLoanPlanById(int id) throws ResourceNotFoundException;
 
-    List<LoanPlansDto> getAllLoanPlans();
+    List<LoanPlans> getAllLoanPlans();
 
     int calculateInterestAmount(LoanPlans loanPlan, BaseInterestRates baseInterestRates);
 

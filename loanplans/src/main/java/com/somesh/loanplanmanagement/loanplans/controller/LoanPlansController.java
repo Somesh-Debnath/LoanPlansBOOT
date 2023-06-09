@@ -2,6 +2,7 @@ package com.somesh.loanplanmanagement.loanplans.controller;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.stream.Collectors;
 import com.somesh.loanplanmanagement.loanplans.dto.LoanPlansDto;
 import com.somesh.loanplanmanagement.loanplans.entity.LoanPlans;
 import com.somesh.loanplanmanagement.loanplans.exception.ResourceNotFoundException;
@@ -28,32 +29,37 @@ public class LoanPlansController {
     @Autowired
     private ILoanPlansService loanPlansService;
     @Autowired
-    private LoanPlansRepository loanPlansRepository;
+	private ModelMapper modelMapper;
 
     @GetMapping(path = "/loanplans", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<List<LoanPlansDto>> getAllLoanPlans() {
-        List<LoanPlansDto> loanPlans = loanPlansService.getAllLoanPlans();
-        return new ResponseEntity<List<LoanPlansDto>>(loanPlans, HttpStatus.OK);
+    public List<LoanPlansDto> getAllLoanPlans() {
+        return loanPlansService.getAllLoanPlans().stream().map(loanPlan -> modelMapper.map(loanPlan, LoanPlansDto.class)).
+        collect(Collectors.toList());
+
     }
 
     @GetMapping(path = "/loanplans/{planid}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public LoanPlansDto findByLoanPlansIdFromDBWithException(@PathVariable int planid) throws ResourceNotFoundException {
-        LoanPlansDto loanPlans = loanPlansService.getLoanPlanById(planid)
-                .orElseThrow(() -> new ResourceNotFoundException("Loan Plan not found for this id :: " + planid));
-        return loanPlans;
+    public ResponseEntity<LoanPlansDto> getLoanPlansById(@PathVariable int planid) throws ResourceNotFoundException {
+        LoanPlans loanPlan = loanPlansService.getLoanPlanById(planid).orElse(null);
+        LoanPlansDto loanPlanDto = modelMapper.map(loanPlan, LoanPlansDto.class);
+        return new ResponseEntity<LoanPlansDto>(loanPlanDto, HttpStatus.OK);
     }
 
     @PostMapping(path = "/loanplan", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<LoanPlansDto> createLoanPlans( @RequestBody LoanPlansDto loanPlans) throws Exception {
-        LoanPlansDto loanPlan = loanPlansService.createLoanPlan(loanPlans);
-        return new ResponseEntity<LoanPlansDto>(loanPlan, HttpStatus.CREATED);
+    public ResponseEntity<LoanPlansDto> createLoanPlans(@RequestBody LoanPlansDto loanPlansDto) throws Exception {
+        LoanPlans loanPlan = modelMapper.map(loanPlansDto, LoanPlans.class);
+        LoanPlans loanPlanRequest = loanPlansService.createLoanPlan(loanPlan);
+        LoanPlansDto loanPlanResponse = modelMapper.map(loanPlanRequest, LoanPlansDto.class);
+        return new ResponseEntity<LoanPlansDto>(loanPlanResponse, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/loanplans/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<LoanPlansDto> updateLoanPlans(@PathVariable int id, LoanPlansDto loanPlans)
-            throws ResourceNotFoundException {
-        LoanPlansDto updatedLoanPlans = loanPlansService.updateLoanPlan(loanPlans, id);
-        return new ResponseEntity<LoanPlansDto>(updatedLoanPlans, HttpStatus.OK);
+    public ResponseEntity<LoanPlansDto> updateLoanPlans(@PathVariable(value = "id") int planid,
+            @Valid @RequestBody LoanPlansDto loanPlansDto) throws ResourceNotFoundException {
+        LoanPlans loanPlan = modelMapper.map(loanPlansDto, LoanPlans.class);
+        LoanPlans loanPlanRequest = loanPlansService.updateLoanPlan(loanPlan, planid);
+        LoanPlansDto loanPlanResponse = modelMapper.map(loanPlanRequest, LoanPlansDto.class);
+        return new ResponseEntity<LoanPlansDto>(loanPlanResponse, HttpStatus.OK);
     }
 
 }

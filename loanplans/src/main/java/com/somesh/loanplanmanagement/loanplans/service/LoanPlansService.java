@@ -19,11 +19,10 @@ public class LoanPlansService implements ILoanPlansService {
     @Autowired
     private LoanPlansRepository loanPlansRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-    
-    
-
+    public LoanPlansService(LoanPlansRepository loanPlansRepository) {
+        super();
+        this.loanPlansRepository = loanPlansRepository;
+    }
     @Override
     public int calculateInterestAmount(LoanPlans loanPlan, BaseInterestRates baseInterestRates) {
         int interestAmount = 0;
@@ -64,20 +63,13 @@ public class LoanPlansService implements ILoanPlansService {
 
 
     @Override
-    public LoanPlansDto createLoanPlan(LoanPlansDto loanPlan) throws Exception {        
-        calculateTotalPayable(this.dtoToLoanPlans(loanPlan), new BaseInterestRates());
-        if(loanPlan.getPlanValidity().isBefore(LocalDate.now())){
-            throw new Exception("Plan validity should be greater than current date");        }
-        if(loanPlan.getTenure()>999){
-            throw new Exception("Tenure should be a maximum of 3 digits only");
-        }
-
-        LoanPlans loanPlans=this.dtoToLoanPlans(loanPlan);
-        return this.loanPlansToDto(loanPlansRepository.save(loanPlans));
+    public LoanPlans createLoanPlan(LoanPlans loanPlan)  { 
+        
+        return loanPlansRepository.save(loanPlan);
     }
 
     @Override
-    public LoanPlansDto updateLoanPlan(LoanPlansDto loanPlan, Integer id) throws ResourceNotFoundException {
+    public LoanPlans updateLoanPlan(LoanPlans loanPlan, Integer id) throws ResourceNotFoundException {
         LoanPlans loanPlans=this.loanPlansRepository.findById(id)
         .orElseThrow(()-> new ResourceNotFoundException("Loan Plan not found for this id :: " + id));
         
@@ -86,32 +78,48 @@ public class LoanPlansService implements ILoanPlansService {
         loanPlans.setPrincipalAmount(loanPlan.getPrincipalAmount());
         loanPlans.setTenure(loanPlan.getTenure());
         loanPlans.setInterestRate(loanPlan.getInterestRate());
-        //loanPlans.setInterestAmount(loanPlan.getInterestAmount());
+        loanPlans.setInterestAmount(loanPlan.getInterestAmount());
+        loanPlans.setTotalPayable(loanPlan.getTotalPayable());
+        loanPlans.setEMI(loanPlan.getEMI());
         loanPlans.setPlanValidity(loanPlan.getPlanValidity());
-        final LoanPlans updatedLoanPlan = loanPlansRepository.save(loanPlans);
-        return this.loanPlansToDto(updatedLoanPlan);
+        return loanPlansRepository.save(loanPlans);
         
     }
 
     @Override
-    public Optional<LoanPlansDto> getLoanPlanById(int planid) throws ResourceNotFoundException {
-        
-       LoanPlans loanPlans=this.loanPlansRepository.findById(planid)
-         .orElseThrow(()-> new ResourceNotFoundException("Loan Plan not found for this id :: " + planid));
-         return Optional.of(this.loanPlansToDto(loanPlans));
+    public Optional<LoanPlans> getLoanPlanById(int planid) throws ResourceNotFoundException {
+        Optional<LoanPlans> loanPlans=this.loanPlansRepository.findById(planid);
+        if(loanPlans.isEmpty()) {
+            throw new ResourceNotFoundException("Loan Plan not found for this id :: " + planid);
+        } else{
+            return loanPlans;
+        }
+       
     }
 
     @Override
-    public List<LoanPlansDto> getAllLoanPlans() {
+    public List<LoanPlans> getAllLoanPlans() {
         List<LoanPlans> loanPlans=this.loanPlansRepository.findAll();
-        return loanPlans.stream().map(this::loanPlansToDto).toList();
+        return loanPlans;
     }
     
-    public LoanPlans dtoToLoanPlans(LoanPlansDto loanPlan) {
-        return modelMapper.map(loanPlan, LoanPlans.class);
-    }
+    // public LoanPlans dtoToLoanPlans(LoanPlansDto loanPlan) {
+    //     return modelMapper.map(loanPlan, LoanPlans.class);
+    // }
 
-    public LoanPlansDto loanPlansToDto(LoanPlans loanPlan) {
-        return modelMapper.map(loanPlan, LoanPlansDto.class);
-    }
+    // public LoanPlansDto loanPlansToDto(LoanPlans loanPlan) {
+    //     LoanPlansDto loanPlanDto = new LoanPlansDto();
+    //     loanPlanDto.setPlanId(loanPlan.getPlanId());
+    //     loanPlanDto.setPlanName(loanPlan.getPlanName());
+    //     loanPlanDto.setLoanTypeId(loanPlan.getLoanTypeId());
+    //     loanPlanDto.setPrincipalAmount(loanPlan.getPrincipalAmount());
+    //     loanPlanDto.setTenure(loanPlan.getTenure());
+    //     loanPlanDto.setInterestRate(loanPlan.getInterestRate());
+    //     loanPlanDto.setInterestAmount(loanPlan.getInterestAmount());
+    //     loanPlanDto.setTotalPayable(loanPlan.getTotalPayable());
+    //     loanPlanDto.setEMI(loanPlan.getEMI());
+    //     loanPlanDto.setPlanValidity(loanPlan.getPlanValidity());
+    //     loanPlanDto.setPlanAddedOn(loanPlan.getPlanAddedOn());
+    //     return loanPlanDto;
+    // }
 }

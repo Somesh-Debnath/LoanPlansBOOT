@@ -11,12 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoanPlansDto {
 
+    private int planId;
     private String PlanName;
     private int LoanTypeId;
     private int PrincipalAmount;
     private int Tenure;
     private float InterestRate;
-    private int InterestAmount;
+     private int InterestAmount;
     private int TotalPayable;
     private float EMI;
     private LocalDate PlanValidity;

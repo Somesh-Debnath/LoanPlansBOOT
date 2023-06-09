@@ -14,26 +14,17 @@ import com.somesh.loanplanmanagement.loanplans.repository.BaseInterestRatesRepos
 public class BaseInterestService implements IBaseInterestRatesService{
 @Autowired
     private BaseInterestRatesRepository baseInterestRatesRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    
+    public BaseInterestService(BaseInterestRatesRepository baseInterestRatesRepository) {
+        super();
+        this.baseInterestRatesRepository = baseInterestRatesRepository;
+    }
     @Override
     public List<BaseInterestRates> getAllBaseInterestRates() {
        return baseInterestRatesRepository.findAll();
     }
     @Override
-    public BaseInterestRatesDto createBaseInterestRates(BaseInterestRatesDto baseInterestRates) {
-        BaseInterestRates baseInterestRatesEntity = dtoToBaseInterestRates(baseInterestRates);
-        BaseInterestRates savedBaseInterestRates = baseInterestRatesRepository.save(baseInterestRatesEntity);
-        return BaseInterestRatesToDto(savedBaseInterestRates);
-    }
-    
-        
-    public BaseInterestRates dtoToBaseInterestRates(BaseInterestRatesDto BaseInterestRate) {
-        return modelMapper.map(BaseInterestRate, BaseInterestRates.class);
-    }
-
-    public BaseInterestRatesDto BaseInterestRatesToDto(BaseInterestRates BaseInterestRate) {
-        return modelMapper.map(BaseInterestRate, BaseInterestRatesDto.class);
+    public BaseInterestRates createBaseInterestRates(BaseInterestRates baseInterestRates) {
+        return baseInterestRatesRepository.save(baseInterestRates);
     }
 }

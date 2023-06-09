@@ -65,7 +65,7 @@ public class LoanPlans {
 
     private BaseInterestRates baseinterestrates;
 
-    @OneToMany(mappedBy = "loanplans",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "loanplans",fetch = FetchType.EAGER)
     private List<LoanPlansHistory> loanplanshistory;
 
     // Seed the data into the LoanPlans table 
