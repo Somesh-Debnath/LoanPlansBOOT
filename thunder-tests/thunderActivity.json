@@ -1,0 +1,92 @@
+[
+  {
+    "_id": "fd4c151b-dcb7-4bb1-96c2-81b74f1247ac",
+    "colId": "history",
+    "containerId": "",
+    "name": "localhost:9090/api/interestrates",
+    "url": "localhost:9090/api/interestrates",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-09T15:16:45.814Z",
+    "modified": "2023-06-09T15:16:45.814Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"baseInterestRate\":8.5,\n  \"loanType\":\"Home\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "36eca8ff-2737-420f-bb7c-58393c06834a",
+    "colId": "history",
+    "containerId": "",
+    "name": "localhost:9090/api/loanplans",
+    "url": "localhost:9090/api/loanplans",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-09T15:18:37.091Z",
+    "modified": "2023-06-09T15:46:31.928Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "\n{\n    \"planName\": \"Ne\",\n    \"loanTypeId\": 1,\n    \"principalAmount\": 100000,\n    \"tenure\": 12,\n    \"planValidity\": \"2021-09-30\"\n      }",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "ce358c09-95a3-462f-be04-988b8e18dea4",
+    "colId": "history",
+    "containerId": "",
+    "name": "localhost:9090/api/loanplan",
+    "url": "localhost:9090/api/loanplan",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-06-09T15:34:57.213Z",
+    "modified": "2023-06-09T15:55:32.032Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "\n{\n    \"planName\": \"Notun\",\n    \"loanTypeId\": 3,\n    \"principalAmount\": 100000,\n    \"tenure\": 10,\n    \"planValidity\": \"2024-09-30\"\n      }",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "d7b89196-a809-48f2-a54b-9cfaa4d6d515",
+    "colId": "history",
+    "containerId": "",
+    "name": "localhost:9090/api/loanplans/1",
+    "url": "localhost:9090/api/loanplans/1",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-09T15:51:07.131Z",
+    "modified": "2023-06-09T15:51:07.131Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "2c1864f0-8cec-4d00-92a4-ab96c0261eb4",
+    "colId": "history",
+    "containerId": "",
+    "name": "localhost:9090/api/loanplan/1",
+    "url": "localhost:9090/api/loanplans/1",
+    "method": "PUT",
+    "sortNum": 0,
+    "created": "2023-06-09T15:51:57.540Z",
+    "modified": "2023-06-09T15:53:33.152Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"planName\": \"abcd\",\n    \"loanTypeId\": 2,\n    \"principalAmount\": 1000,\n    \"tenure\": 11,\n    \"planValidity\": \"2023-09-30\"\n      }",
+      "form": []
+    },
+    "tests": []
+  }
+]

@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import com.somesh.loanplanmanagement.loanplans.dto.LoanPlansDto;
 import com.somesh.loanplanmanagement.loanplans.entity.LoanPlans;
 import com.somesh.loanplanmanagement.loanplans.exception.ResourceNotFoundException;
-import com.somesh.loanplanmanagement.loanplans.repository.LoanPlansRepository;
 import com.somesh.loanplanmanagement.loanplans.service.ILoanPlansService;
 
 import jakarta.validation.Valid;

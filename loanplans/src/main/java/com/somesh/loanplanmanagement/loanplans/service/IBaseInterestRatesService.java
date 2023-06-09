@@ -8,5 +8,5 @@ public interface IBaseInterestRatesService {
     /* return list of interest rates */
     List<BaseInterestRates> getAllBaseInterestRates();
 
-    BaseInterestRates createBaseInterestRates(BaseInterestRates baseInterestRates);
+    //BaseInterestRates createBaseInterestRates(BaseInterestRates baseInterestRates);
 }

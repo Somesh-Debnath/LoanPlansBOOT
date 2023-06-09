@@ -2,11 +2,9 @@ package com.somesh.loanplanmanagement.loanplans.service;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.somesh.loanplanmanagement.loanplans.dto.BaseInterestRatesDto;
 import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.repository.BaseInterestRatesRepository;
 
@@ -23,8 +21,8 @@ public class BaseInterestService implements IBaseInterestRatesService{
     public List<BaseInterestRates> getAllBaseInterestRates() {
        return baseInterestRatesRepository.findAll();
     }
-    @Override
-    public BaseInterestRates createBaseInterestRates(BaseInterestRates baseInterestRates) {
-        return baseInterestRatesRepository.save(baseInterestRates);
-    }
+    // @Override
+    // public BaseInterestRates createBaseInterestRates(BaseInterestRates baseInterestRates) {
+    //     return baseInterestRatesRepository.save(baseInterestRates);
+    // }
 }

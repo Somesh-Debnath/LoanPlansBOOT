@@ -4,20 +4,21 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.somesh.loanplanmanagement.loanplans.dto.LoanPlansDto;
 import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.entity.LoanPlans;
 import com.somesh.loanplanmanagement.loanplans.exception.ResourceNotFoundException;
+import com.somesh.loanplanmanagement.loanplans.repository.BaseInterestRatesRepository;
 import com.somesh.loanplanmanagement.loanplans.repository.LoanPlansRepository;
 
 @Service
 public class LoanPlansService implements ILoanPlansService {
     @Autowired
     private LoanPlansRepository loanPlansRepository;
+    @Autowired
+    private BaseInterestRatesRepository baseInterestRatesRepository;
 
     public LoanPlansService(LoanPlansRepository loanPlansRepository) {
         super();
@@ -26,22 +27,26 @@ public class LoanPlansService implements ILoanPlansService {
     @Override
     public int calculateInterestAmount(LoanPlans loanPlan, BaseInterestRates baseInterestRates) {
         int interestAmount = 0;
-        double baseInterestRate = baseInterestRates.getBaseInterestRate();
-        double interestRate = 0.0;
+        float baseInterestRate = baseInterestRates.getBaseInterestRate();
+        float interestRate = 0;
         int tenure = loanPlan.getTenure();
+        if(tenure>999){
+            throw new IllegalArgumentException("Tenure cannot be more than 3 digits");
+        }
         double principleAmount = loanPlan.getPrincipalAmount();
         String type = baseInterestRates.getLoanType();
         if (type.equalsIgnoreCase("Personal")) {
-            interestRate = baseInterestRate + (tenure * 0.2);
+            interestRate = (float) (baseInterestRate + (tenure * 0.2));
         } else if (type.equalsIgnoreCase("Home")) {
-            interestRate = baseInterestRate + (tenure * 0.3);
+            interestRate = (float) (baseInterestRate + (tenure * 0.3));
         } else if (type.equalsIgnoreCase("Vehicle")) {
-            interestRate = baseInterestRate + (tenure * 0.25);
+            interestRate = (float) (baseInterestRate + (tenure * 0.25));
         } else if (type.equalsIgnoreCase("Medical")) {
-            interestRate = baseInterestRate + (tenure * 0.25);
+            interestRate = (float) (baseInterestRate + (tenure * 0.25));
         } else {
             interestRate = baseInterestRate;
         }
+        loanPlan.setInterestRate(interestRate);
         interestAmount = (int) ((principleAmount * interestRate * tenure) / 100);
         return interestAmount;
 
@@ -58,13 +63,16 @@ public class LoanPlansService implements ILoanPlansService {
         loanPlan.setTotalPayable(totalPayable);
         loanPlan.setPlanAddedOn(LocalDate.now());
         loanPlan.setEMI(emi);
+        if(loanPlan.getPlanValidity().isBefore(LocalDate.now())){
+            throw new IllegalArgumentException("Plan validity cannot be before today's date");
+        }
         return totalPayable;
     }
 
 
     @Override
     public LoanPlans createLoanPlan(LoanPlans loanPlan)  { 
-        
+        calculateTotalPayable(loanPlan, baseInterestRatesRepository.findById(loanPlan.getLoanTypeId()).get());
         return loanPlansRepository.save(loanPlan);
     }
 
@@ -72,7 +80,7 @@ public class LoanPlansService implements ILoanPlansService {
     public LoanPlans updateLoanPlan(LoanPlans loanPlan, Integer id) throws ResourceNotFoundException {
         LoanPlans loanPlans=this.loanPlansRepository.findById(id)
         .orElseThrow(()-> new ResourceNotFoundException("Loan Plan not found for this id :: " + id));
-        
+        calculateTotalPayable(loanPlan, baseInterestRatesRepository.findById(loanPlan.getLoanTypeId()).get());
         loanPlans.setPlanName(loanPlan.getPlanName());
         loanPlans.setLoanTypeId(loanPlan.getLoanTypeId());
         loanPlans.setPrincipalAmount(loanPlan.getPrincipalAmount());
@@ -82,6 +90,8 @@ public class LoanPlansService implements ILoanPlansService {
         loanPlans.setTotalPayable(loanPlan.getTotalPayable());
         loanPlans.setEMI(loanPlan.getEMI());
         loanPlans.setPlanValidity(loanPlan.getPlanValidity());
+        loanPlans.setPlanAddedOn(loanPlan.getPlanAddedOn());
+        
         return loanPlansRepository.save(loanPlans);
         
     }

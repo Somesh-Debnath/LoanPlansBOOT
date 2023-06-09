@@ -3,8 +3,6 @@ package com.somesh.loanplanmanagement.loanplans.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.fasterxml.jackson.databind.JsonSerializable.Base;
-import com.somesh.loanplanmanagement.loanplans.dto.LoanPlansDto;
 import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.entity.LoanPlans;
 import com.somesh.loanplanmanagement.loanplans.exception.ResourceNotFoundException;
