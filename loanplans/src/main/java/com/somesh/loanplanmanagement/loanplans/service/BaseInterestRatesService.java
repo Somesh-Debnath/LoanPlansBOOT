@@ -9,11 +9,11 @@ import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.repository.BaseInterestRatesRepository;
 
 @Service
-public class BaseInterestService implements IBaseInterestRatesService{
+public class BaseInterestRatesService implements IBaseInterestRatesService{
 @Autowired
     private BaseInterestRatesRepository baseInterestRatesRepository;
     
-    public BaseInterestService(BaseInterestRatesRepository baseInterestRatesRepository) {
+    public BaseInterestRatesService(BaseInterestRatesRepository baseInterestRatesRepository) {
         super();
         this.baseInterestRatesRepository = baseInterestRatesRepository;
     }
