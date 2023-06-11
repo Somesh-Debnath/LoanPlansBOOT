@@ -27,14 +27,9 @@
     "method": "GET",
     "sortNum": 0,
     "created": "2023-06-09T15:18:37.091Z",
-    "modified": "2023-06-10T06:50:27.058Z",
+    "modified": "2023-06-11T05:49:40.177Z",
     "headers": [],
     "params": [],
-    "body": {
-      "type": "json",
-      "raw": "\n{\n    \"planName\": \"Ne\",\n    \"loanTypeId\": 1,\n    \"principalAmount\": 100000,\n    \"tenure\": 12,\n    \"planValidity\": \"2021-09-30\"\n      }",
-      "form": []
-    },
     "tests": []
   },
   {
@@ -61,13 +56,19 @@
     "colId": "history",
     "containerId": "",
     "name": "localhost:9090/api/loanplans/1",
-    "url": "localhost:9090/api/loanplans/1",
+    "url": "localhost:9091/api/loanplans/{planid}",
     "method": "GET",
     "sortNum": 0,
     "created": "2023-06-09T15:51:07.131Z",
-    "modified": "2023-06-09T15:51:07.131Z",
+    "modified": "2023-06-10T14:58:06.390Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "planid",
+        "value": "1",
+        "isPath": true
+      }
+    ],
     "tests": []
   },
   {
@@ -75,18 +76,38 @@
     "colId": "history",
     "containerId": "",
     "name": "localhost:9090/api/loanplan/1",
-    "url": "localhost:9090/api/loanplans/1",
+    "url": "localhost:9091/api/loanplans/{planid}",
     "method": "PUT",
     "sortNum": 0,
     "created": "2023-06-09T15:51:57.540Z",
-    "modified": "2023-06-09T15:53:33.152Z",
+    "modified": "2023-06-10T14:58:38.276Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "planid",
+        "value": "1",
+        "isPath": true
+      }
+    ],
     "body": {
       "type": "json",
       "raw": "{\n    \"planName\": \"abcd\",\n    \"loanTypeId\": 2,\n    \"principalAmount\": 1000,\n    \"tenure\": 11,\n    \"planValidity\": \"2023-09-30\"\n      }",
       "form": []
     },
+    "tests": []
+  },
+  {
+    "_id": "82e0b88d-011c-4ae3-88fe-7fe4b23f7f27",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:9091/v2/api-docs",
+    "url": "http://localhost:9091/v2/api-docs",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-11T11:38:43.834Z",
+    "modified": "2023-06-11T11:38:43.834Z",
+    "headers": [],
+    "params": [],
     "tests": []
   }
 ]

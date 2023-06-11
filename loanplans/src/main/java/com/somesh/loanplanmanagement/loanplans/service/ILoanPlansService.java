@@ -13,7 +13,7 @@ public interface ILoanPlansService {
 
     LoanPlans updateLoanPlan(LoanPlans loanPlan, Integer id) throws ResourceNotFoundException;
 
-    Optional<LoanPlans> getLoanPlanById(int id) throws ResourceNotFoundException;
+    LoanPlans getLoanPlanById(int id) throws ResourceNotFoundException;
 
     List<LoanPlans> getAllLoanPlans();
 

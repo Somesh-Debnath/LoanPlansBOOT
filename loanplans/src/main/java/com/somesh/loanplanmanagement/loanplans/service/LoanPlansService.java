@@ -77,9 +77,9 @@ public class LoanPlansService implements ILoanPlansService {
     }
 
     @Override
-    public LoanPlans updateLoanPlan(LoanPlans loanPlan, Integer id) throws ResourceNotFoundException {
-        LoanPlans loanPlans=this.loanPlansRepository.findById(id)
-        .orElseThrow(()-> new ResourceNotFoundException("Loan Plan not found for this id :: " + id));
+    public LoanPlans updateLoanPlan(LoanPlans loanPlan, Integer planid) throws ResourceNotFoundException {
+        LoanPlans loanPlans=this.loanPlansRepository.findById(planid)
+        .orElseThrow(()-> new ResourceNotFoundException("Loan Plan not found for this id :: " + planid));
         calculateTotalPayable(loanPlan, baseInterestRatesRepository.findById(loanPlan.getLoanTypeId()).get());
         loanPlans.setPlanName(loanPlan.getPlanName());
         loanPlans.setLoanTypeId(loanPlan.getLoanTypeId());
@@ -97,13 +97,15 @@ public class LoanPlansService implements ILoanPlansService {
     }
 
     @Override
-    public Optional<LoanPlans> getLoanPlanById(int planid) throws ResourceNotFoundException {
-        Optional<LoanPlans> loanPlans=this.loanPlansRepository.findById(planid);
-        if(loanPlans.isEmpty()) {
-            throw new ResourceNotFoundException("Loan Plan not found for this id :: " + planid);
-        } else{
-            return loanPlans;
+    public LoanPlans getLoanPlanById(int planid) throws ResourceNotFoundException {
+        LoanPlans loanPlans=null;
+        if(loanPlansRepository.findById(planid).isPresent()){
+            loanPlans=loanPlansRepository.findById(planid).get();
         }
+        else{
+            throw new ResourceNotFoundException("Loan Plan not found for this id :: " + planid);
+        }
+        return loanPlans;
        
     }
 

@@ -2,6 +2,9 @@ package com.somesh.loanplanmanagement.loanplans.controller;
 
 import java.util.List;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +28,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/api")
 @RestController
 public class LoanPlansController {
+
+    Logger logger=LoggerFactory.getLogger(LoanPlansController.class);
     @Autowired
     private ILoanPlansService loanPlansService;
     @Autowired
@@ -32,6 +37,7 @@ public class LoanPlansController {
 
     @GetMapping(path = "/loanplans", produces = { MediaType.APPLICATION_JSON_VALUE })
     public List<LoanPlansDto> getAllLoanPlans() {
+        logger.info("Loan Plans fetched successfully");
         return loanPlansService.getAllLoanPlans().stream().map(loanPlan -> modelMapper.map(loanPlan, LoanPlansDto.class)).
         collect(Collectors.toList());
 
@@ -39,8 +45,9 @@ public class LoanPlansController {
 
     @GetMapping(path = "/loanplans/{planid}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<LoanPlansDto> getLoanPlansById(@PathVariable int planid) throws ResourceNotFoundException {
-        LoanPlans loanPlan = loanPlansService.getLoanPlanById(planid).orElse(null);
+        LoanPlans loanPlan = loanPlansService.getLoanPlanById(planid);
         LoanPlansDto loanPlanDto = modelMapper.map(loanPlan, LoanPlansDto.class);
+        logger.info("Loan Plan fetched successfully");
         return new ResponseEntity<LoanPlansDto>(loanPlanDto, HttpStatus.OK);
     }
 
@@ -49,6 +56,7 @@ public class LoanPlansController {
         LoanPlans loanPlan = modelMapper.map(loanPlansDto, LoanPlans.class);
         LoanPlans loanPlanRequest = loanPlansService.createLoanPlan(loanPlan);
         LoanPlansDto loanPlanResponse = modelMapper.map(loanPlanRequest, LoanPlansDto.class);
+        logger.info("Loan Plan created successfully");
         return new ResponseEntity<LoanPlansDto>(loanPlanResponse, HttpStatus.CREATED);
     }
 
@@ -58,6 +66,7 @@ public class LoanPlansController {
         LoanPlans loanPlan = modelMapper.map(loanPlansDto, LoanPlans.class);
         LoanPlans loanPlanRequest = loanPlansService.updateLoanPlan(loanPlan, planid);
         LoanPlansDto loanPlanResponse = modelMapper.map(loanPlanRequest, LoanPlansDto.class);
+        logger.info("Loan Plan updated successfully");
         return new ResponseEntity<LoanPlansDto>(loanPlanResponse, HttpStatus.OK);
     }
 

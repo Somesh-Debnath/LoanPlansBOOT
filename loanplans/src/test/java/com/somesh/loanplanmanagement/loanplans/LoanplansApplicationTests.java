@@ -3,6 +3,8 @@ package com.somesh.loanplanmanagement.loanplans;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.entity.LoanPlans;
+import com.somesh.loanplanmanagement.loanplans.exception.ResourceNotFoundException;
 import com.somesh.loanplanmanagement.loanplans.repository.BaseInterestRatesRepository;
 import com.somesh.loanplanmanagement.loanplans.repository.LoanPlansRepository;
 import com.somesh.loanplanmanagement.loanplans.service.BaseInterestRatesService;
@@ -45,25 +48,25 @@ class LoanplansApplicationTests {
 	}
 
 	@Test
-	public void getLoanPlanByIdTest(){
-		int id = 1;
-		when(loanPlansRepository.findById(id)).thenReturn((new LoanPlans()));
+	public void getLoanPlanByIdTest() throws ResourceNotFoundException{
+		when(loanPlansRepository.findById(1))
+		.thenReturn(Optional.of(new LoanPlans()));
+		assertEquals(new LoanPlans(), loanPlansService.getLoanPlanById(1));
 	}
 
 	@Test
-	public void createLoanPlanTest(){
+	public void createLoanPlanTest() {
 		LoanPlans loanPlan = new LoanPlans();
 		when(loanPlansRepository.save(loanPlan)).thenReturn(loanPlan);
 		assertEquals(loanPlan, loanPlansService.createLoanPlan(loanPlan));
 	}
 
 	@Test
-	public void updateLoanPlanTest(){
-		LoanPlans loanPlan = new LoanPlans();
-		int id = 1;
-		when(loanPlansRepository.findById(id)).thenReturn((new LoanPlans()));
+	public void updateLoanPlanTest() throws ResourceNotFoundException {
+		LoanPlans loanPlan = new LoanPlans(144, "string", 1, 1, 0, 1.0f, 1, 1, 1f, LocalDate.now(), LocalDate.now(), null,
+				null);
 		when(loanPlansRepository.save(loanPlan)).thenReturn(loanPlan);
-		assertEquals(loanPlan, loanPlansService.updateLoanPlan(loanPlan, id));
+		assertEquals(loanPlan, loanPlansService.updateLoanPlan(loanPlan, 144));
 	}
 
 	@Test
@@ -73,6 +76,5 @@ class LoanplansApplicationTests {
 				new BaseInterestRates()).collect(Collectors.toList()));
 		assertEquals(2, baseInterestRatesService.getAllBaseInterestRates().size());
 	}
-
 
 }
