@@ -2,7 +2,7 @@ package com.somesh.loanplanmanagement.loanplans.controller;
 
 import java.util.List;
 
-
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.somesh.loanplanmanagement.loanplans.dto.BaseInterestRatesDto;
 import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.service.IBaseInterestRatesService;
+
+import ch.qos.logback.core.model.Model;
 
 
 @RequestMapping("/api")
@@ -23,12 +26,14 @@ public class BaseInterestRatesController {
     Logger logger=LoggerFactory.getLogger(BaseInterestRatesController.class);
     @Autowired
     private IBaseInterestRatesService baseInterestRatesService;
-
+    @Autowired
+    private ModelMapper modelMapper;
     @GetMapping(path = "/interestrates", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<List<BaseInterestRates>> getAllBaseInterestRates() {
+    public ResponseEntity<List<BaseInterestRatesDto>> getAllBaseInterestRates() {
         List<BaseInterestRates> baseInterestRates = baseInterestRatesService.getAllBaseInterestRates();
+        List<BaseInterestRatesDto> baseInterestRatesDto = modelMapper.map(baseInterestRates, List.class);
         logger.info("Base Interest Rates fetched successfully");
-        return new ResponseEntity<List<BaseInterestRates>>(baseInterestRates, HttpStatus.OK);
+        return new ResponseEntity<List<BaseInterestRatesDto>>(baseInterestRatesDto, HttpStatus.OK);
     }
 
     // @PostMapping(path = "/interestrate")
