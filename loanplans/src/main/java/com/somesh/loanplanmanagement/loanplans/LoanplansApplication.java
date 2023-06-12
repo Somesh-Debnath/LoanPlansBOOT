@@ -1,14 +1,24 @@
 package com.somesh.loanplanmanagement.loanplans;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 
 @SpringBootApplication
+//@EnableSwagger2
 public class LoanplansApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LoanplansApplication.class, args);
-		System.out.println("zkdflksdj");
+	}
+
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
 	}
 
 }

@@ -5,17 +5,20 @@ import java.util.Optional;
 
 import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.entity.LoanPlans;
+import com.somesh.loanplanmanagement.loanplans.exception.ResourceNotFoundException;
 
 public interface ILoanPlansService {
 
-    public LoanPlans createLoanPlan(LoanPlans loanPlan);
+    LoanPlans createLoanPlan(LoanPlans loanPlan);
 
-    public LoanPlans updateLoanPlan(LoanPlans loanPlan);
+    LoanPlans updateLoanPlan(LoanPlans loanPlan, Integer id) throws ResourceNotFoundException;
 
-    public Optional<LoanPlans> getLoanPlanById(int id);
+    LoanPlans getLoanPlanById(int id) throws ResourceNotFoundException;
 
-    public List<LoanPlans> getAllLoanPlans();
+    List<LoanPlans> getAllLoanPlans();
 
-    public double calculateInterestAmount(LoanPlans loanPlan, BaseInterestRates baseInterestRates);
+    int calculateInterestAmount(LoanPlans loanPlan, BaseInterestRates baseInterestRates);
+
+    int calculateTotalPayable(LoanPlans loanPlan, BaseInterestRates baseInterestRates);
 
 }

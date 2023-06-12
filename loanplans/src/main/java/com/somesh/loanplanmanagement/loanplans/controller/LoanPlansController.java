@@ -2,6 +2,10 @@ package com.somesh.loanplanmanagement.loanplans.controller;
 
 import java.util.List;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,63 +17,57 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.stream.Collectors;
+import com.somesh.loanplanmanagement.loanplans.dto.LoanPlansDto;
 import com.somesh.loanplanmanagement.loanplans.entity.LoanPlans;
 import com.somesh.loanplanmanagement.loanplans.exception.ResourceNotFoundException;
-import com.somesh.loanplanmanagement.loanplans.repository.LoanPlansRepository;
 import com.somesh.loanplanmanagement.loanplans.service.ILoanPlansService;
 
-
+import jakarta.validation.Valid;
 
 @RequestMapping("/api")
 @RestController
 public class LoanPlansController {
+
+    Logger logger=LoggerFactory.getLogger(LoanPlansController.class);
     @Autowired
     private ILoanPlansService loanPlansService;
     @Autowired
-    private LoanPlansRepository loanPlansRepository;
+	private ModelMapper modelMapper;
 
     @GetMapping(path = "/loanplans", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<List<LoanPlans>> getAllLoanPlans() {
-        List<LoanPlans> loanPlans = loanPlansService.getAllLoanPlans();
-        for(int i=0;i<loanPlans.size();i++) {
-            System.out.println(loanPlans.get(i).getPlanName());
-        }
-        return new ResponseEntity<List<LoanPlans>>(loanPlans, HttpStatus.OK);
+    public List<LoanPlansDto> getAllLoanPlans() {
+        logger.info("Loan Plans fetched successfully");
+        return loanPlansService.getAllLoanPlans().stream().map(loanPlan -> modelMapper.map(loanPlan, LoanPlansDto.class)).
+        collect(Collectors.toList());
+
     }
 
-    @GetMapping(path = "/loanplans/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public LoanPlans findByLoanPlansIdFromDBWithException(@PathVariable int id) throws ResourceNotFoundException {
-        LoanPlans loanPlans = loanPlansService.getLoanPlanById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Loan Plan not found for this id :: " + id));
-        System.out.println(id);
-        return loanPlans;
+    @GetMapping(path = "/loanplans/{planid}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<LoanPlansDto> getLoanPlansById(@PathVariable int planid) throws ResourceNotFoundException {
+        LoanPlans loanPlan = loanPlansService.getLoanPlanById(planid);
+        LoanPlansDto loanPlanDto = modelMapper.map(loanPlan, LoanPlansDto.class);
+        logger.info("Loan Plan fetched successfully");
+        return new ResponseEntity<LoanPlansDto>(loanPlanDto, HttpStatus.OK);
     }
 
     @PostMapping(path = "/loanplan", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<LoanPlans> createLoanPlans(@RequestBody LoanPlans loanPlans) {
-        LoanPlans newLoanPlan = loanPlansService.createLoanPlan(loanPlans);
-        return new ResponseEntity<LoanPlans>(newLoanPlan, HttpStatus.CREATED);
+    public ResponseEntity<LoanPlansDto> createLoanPlans(@RequestBody LoanPlansDto loanPlansDto) throws Exception {
+        LoanPlans loanPlan = modelMapper.map(loanPlansDto, LoanPlans.class);
+        LoanPlans loanPlanRequest = loanPlansService.createLoanPlan(loanPlan);
+        LoanPlansDto loanPlanResponse = modelMapper.map(loanPlanRequest, LoanPlansDto.class);
+        logger.info("Loan Plan created successfully");
+        return new ResponseEntity<LoanPlansDto>(loanPlanResponse, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/loanplans/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<LoanPlans> updateLoanPlans(@PathVariable int id, LoanPlans loanPlans)
-            throws ResourceNotFoundException {
-        LoanPlans updatedLoanPlans = loanPlansService.getLoanPlanById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Loan Plan not found for this id :: " + id));
-        updatedLoanPlans.setPlanName(loanPlans.getPlanName());
-        updatedLoanPlans.setLoanTypeId(loanPlans.getLoanTypeId());
-        updatedLoanPlans.setPrincipalAmount(loanPlans.getPrincipalAmount());
-        updatedLoanPlans.setTenure(loanPlans.getTenure());
-        updatedLoanPlans.setInterestRate(loanPlans.getInterestRate());
-        updatedLoanPlans.setInterestAmount(loanPlans.getInterestAmount());
-        updatedLoanPlans.setTotalPayable(loanPlans.getTotalPayable());
-        updatedLoanPlans.setEMI(loanPlans.getEMI());
-        updatedLoanPlans.setPlanValidity(loanPlans.getPlanValidity());
-        updatedLoanPlans.setPlanAddedOn(loanPlans.getPlanAddedOn());
-        //updatedLoanPlans.setBaseinterest_id(loanPlans.getBaseinterest_id());
-        loanPlansRepository.save(updatedLoanPlans);
-        return new ResponseEntity<LoanPlans>(updatedLoanPlans, HttpStatus.OK);
+    public ResponseEntity<LoanPlansDto> updateLoanPlans(@PathVariable(value = "id") int planid,
+            @Valid @RequestBody LoanPlansDto loanPlansDto) throws ResourceNotFoundException {
+        LoanPlans loanPlan = modelMapper.map(loanPlansDto, LoanPlans.class);
+        LoanPlans loanPlanRequest = loanPlansService.updateLoanPlan(loanPlan, planid);
+        LoanPlansDto loanPlanResponse = modelMapper.map(loanPlanRequest, LoanPlansDto.class);
+        logger.info("Loan Plan updated successfully");
+        return new ResponseEntity<LoanPlansDto>(loanPlanResponse, HttpStatus.OK);
     }
 
 }

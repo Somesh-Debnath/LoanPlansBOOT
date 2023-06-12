@@ -1,9 +1,8 @@
 package com.somesh.loanplanmanagement.loanplans.entity;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -54,10 +53,10 @@ public class LoanPlans {
     private float EMI;
 
     @Column(name = "PlanValidity" , columnDefinition = "date")
-    private Date PlanValidity;
+    private LocalDate PlanValidity;
 
     @Column(name = "PlanAddedOn" , columnDefinition = "date")
-    private Date PlanAddedOn;
+    private LocalDate PlanAddedOn;
 
 
     @ManyToOne
@@ -65,7 +64,7 @@ public class LoanPlans {
 
     private BaseInterestRates baseinterestrates;
 
-    @OneToMany(mappedBy = "loanplans",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "loanplans",fetch = FetchType.EAGER)
     private List<LoanPlansHistory> loanplanshistory;
 
     // Seed the data into the LoanPlans table 

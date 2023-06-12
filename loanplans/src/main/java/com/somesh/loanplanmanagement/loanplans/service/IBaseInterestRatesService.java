@@ -5,8 +5,8 @@ import java.util.List;
 import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 
 public interface IBaseInterestRatesService {
-    /*return list of interest rates */
-    public List<BaseInterestRates> getAllBaseInterestRates();
+    /* return list of interest rates */
+    List<BaseInterestRates> getAllBaseInterestRates();
 
-    public BaseInterestRates createBaseInterestRates(BaseInterestRates baseInterestRates);
+    //BaseInterestRates createBaseInterestRates(BaseInterestRates baseInterestRates);
 }

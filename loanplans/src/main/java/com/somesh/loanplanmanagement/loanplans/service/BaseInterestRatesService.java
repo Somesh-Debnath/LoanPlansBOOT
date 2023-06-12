@@ -7,17 +7,22 @@ import org.springframework.stereotype.Service;
 
 import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.repository.BaseInterestRatesRepository;
+
 @Service
-public class BaseInterestService implements IBaseInterestRatesService{
+public class BaseInterestRatesService implements IBaseInterestRatesService{
 @Autowired
     private BaseInterestRatesRepository baseInterestRatesRepository;
+    
+    public BaseInterestRatesService(BaseInterestRatesRepository baseInterestRatesRepository) {
+        super();
+        this.baseInterestRatesRepository = baseInterestRatesRepository;
+    }
     @Override
     public List<BaseInterestRates> getAllBaseInterestRates() {
        return baseInterestRatesRepository.findAll();
     }
-    @Override
-    public BaseInterestRates createBaseInterestRates(BaseInterestRates baseInterestRates) {
-        return baseInterestRatesRepository.save(baseInterestRates);
-    }
-    
+    // @Override
+    // public BaseInterestRates createBaseInterestRates(BaseInterestRates baseInterestRates) {
+    //     return baseInterestRatesRepository.save(baseInterestRates);
+    // }
 }
