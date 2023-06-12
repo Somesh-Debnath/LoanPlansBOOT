@@ -8,14 +8,9 @@
     "method": "GET",
     "sortNum": 0,
     "created": "2023-06-09T15:16:45.814Z",
-    "modified": "2023-06-10T06:51:25.333Z",
+    "modified": "2023-06-11T17:13:39.181Z",
     "headers": [],
     "params": [],
-    "body": {
-      "type": "json",
-      "raw": "{\n  \"baseInterestRate\":8.5,\n  \"loanType\":\"Home\"\n}",
-      "form": []
-    },
     "tests": []
   },
   {
@@ -41,12 +36,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-06-09T15:34:57.213Z",
-    "modified": "2023-06-10T06:50:34.183Z",
+    "modified": "2023-06-11T17:07:52.377Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "\n{\n    \"planName\": \"Notun\",\n    \"loanTypeId\": 3,\n    \"principalAmount\": 100000,\n    \"tenure\": 10,\n    \"planValidity\": \"2024-09-30\"\n      }",
+      "raw": "\n{\n    \"planName\": \"Notun\",\n    \"loanTypeId\": 3,\n    \"principalAmount\": 100000,\n    \"tenure\": 10,\n    \"planValidity\": \"2024-09-30\"\n}",
       "form": []
     },
     "tests": []
@@ -106,6 +101,20 @@
     "sortNum": 0,
     "created": "2023-06-11T11:38:43.834Z",
     "modified": "2023-06-11T11:38:43.834Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "fcade515-68f8-442b-be27-ec46eeeda067",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:9091/swagger-ui.html",
+    "url": "http://localhost:9091/swagger-ui.html",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-12T15:17:30.563Z",
+    "modified": "2023-06-12T15:17:30.563Z",
     "headers": [],
     "params": [],
     "tests": []
