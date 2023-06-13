@@ -19,17 +19,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.somesh.loanplanmanagement.loanplans.dto.LoanPlansDto;
+import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.entity.LoanPlans;
 import com.somesh.loanplanmanagement.loanplans.exception.ResourceNotFoundException;
+import com.somesh.loanplanmanagement.loanplans.repository.BaseInterestRatesRepository;
 import com.somesh.loanplanmanagement.loanplans.repository.LoanPlansRepository;
 
 public class LoanPlansServiceTest {
     @InjectMocks
     private LoanPlansService loanPlansService;
 
+    @InjectMocks
+    private BaseInterestRatesService baseInterestRatesService;
+
     AutoCloseable autoCloseable;
     @Mock
     private LoanPlansRepository loanPlansRepository;
+
+    @Mock
+    private BaseInterestRatesRepository baseInterestRatesRepo;
     LoanPlans loanPlans;
     LoanPlans loanPlansDto;
 
@@ -75,11 +83,15 @@ public class LoanPlansServiceTest {
         mock(LoanPlans.class);
         mock(LoanPlansRepository.class);
         LoanPlans loanPlans= new LoanPlans();
+        BaseInterestRates baseInterestRates = new BaseInterestRates();
         loanPlans.setPlanId(1);
         loanPlans.setPlanName("Home Loan");
         loanPlans.setLoanTypeId(1);
         loanPlans.setPlanAddedOn(LocalDate.parse("2021-09-30"));
         loanPlans.setPlanValidity(LocalDate.parse("2023-09-30"));
+        baseInterestRates.setLoanType("Home");
+        baseInterestRates.setBaseInterestRate(8.5f);
+        loanPlans.setBaseinterestrates(baseInterestRates);
         when(loanPlansRepository.save(loanPlans)).thenReturn(loanPlans);
         LoanPlans savedLoanPlans = loanPlansService.createLoanPlan(loanPlans);
         assertEquals(savedLoanPlans, loanPlans);
