@@ -36,6 +36,9 @@ public class LoanPlansServiceTest {
     @Mock
     private LoanPlansRepository loanPlansRepository;
 
+    @Autowired
+    private BaseInterestRatesRepository baseInterestRatesRepository;
+
     @Mock
     private BaseInterestRatesRepository baseInterestRatesRepo;
     LoanPlans loanPlans;
@@ -52,6 +55,7 @@ public class LoanPlansServiceTest {
     public void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         loanPlansService = new LoanPlansService(loanPlansRepository);
+        baseInterestRatesService = new BaseInterestRatesService(baseInterestRatesRepository);
         // loanPlansDto = new LoanPlansDto(1, "Home Loan", 1, 100000, 12, 8.5f, 8500, 108500, 9041.67f,
         //         LocalDate.parse("2021-09-30"), LocalDate.parse("2023-09-30"));
         System.out.println(loanPlans);
@@ -92,6 +96,7 @@ public class LoanPlansServiceTest {
         baseInterestRates.setLoanType("Home");
         baseInterestRates.setBaseInterestRate(8.5f);
         loanPlans.setBaseinterestrates(baseInterestRates);
+        baseInterestRatesRepository.save(baseInterestRates);
         when(loanPlansRepository.save(loanPlans)).thenReturn(loanPlans);
         LoanPlans savedLoanPlans = loanPlansService.createLoanPlan(loanPlans);
         assertEquals(savedLoanPlans, loanPlans);
