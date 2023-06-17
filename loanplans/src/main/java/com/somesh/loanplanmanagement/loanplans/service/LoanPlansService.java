@@ -2,7 +2,6 @@ package com.somesh.loanplanmanagement.loanplans.service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,18 +18,19 @@ public class LoanPlansService implements ILoanPlansService {
     private LoanPlansRepository loanPlansRepository;
     @Autowired
     private BaseInterestRatesRepository baseInterestRatesRepository;
-
-    public LoanPlansService(LoanPlansRepository loanPlansRepository) {
-        super();
+    
+    public LoanPlansService(LoanPlansRepository loanPlansRepository, BaseInterestRatesRepository baseInterestRatesRepository) {
         this.loanPlansRepository = loanPlansRepository;
+        this.baseInterestRatesRepository = baseInterestRatesRepository;
     }
+
     @Override
     public int calculateInterestAmount(LoanPlans loanPlan, BaseInterestRates baseInterestRates) {
         int interestAmount = 0;
         float baseInterestRate = baseInterestRates.getBaseInterestRate();
         float interestRate = 0;
         int tenure = loanPlan.getTenure();
-        if(tenure>999){
+        if (tenure > 999) {
             throw new IllegalArgumentException("Tenure cannot be more than 3 digits");
         }
         double principleAmount = loanPlan.getPrincipalAmount();
@@ -63,23 +63,22 @@ public class LoanPlansService implements ILoanPlansService {
         loanPlan.setTotalPayable(totalPayable);
         loanPlan.setPlanAddedOn(LocalDate.now());
         loanPlan.setEMI(emi);
-        if(loanPlan.getPlanValidity().isBefore(LocalDate.now())){
+        if (loanPlan.getPlanValidity().isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("Plan validity cannot be before today's date");
         }
         return totalPayable;
     }
 
-
     @Override
-    public LoanPlans createLoanPlan(LoanPlans loanPlan)  { 
+    public LoanPlans createLoanPlan(LoanPlans loanPlan) {
         calculateTotalPayable(loanPlan, baseInterestRatesRepository.findById(loanPlan.getLoanTypeId()).get());
         return loanPlansRepository.save(loanPlan);
     }
 
     @Override
     public LoanPlans updateLoanPlan(LoanPlans loanPlan, Integer planid) throws ResourceNotFoundException {
-        LoanPlans loanPlans=this.loanPlansRepository.findById(planid)
-        .orElseThrow(()-> new ResourceNotFoundException("Loan Plan not found for this id :: " + planid));
+        LoanPlans loanPlans = this.loanPlansRepository.findById(planid)
+                .orElseThrow(() -> new ResourceNotFoundException("Loan Plan not found for this id :: " + planid));
         calculateTotalPayable(loanPlan, baseInterestRatesRepository.findById(loanPlan.getLoanTypeId()).get());
         loanPlans.setPlanName(loanPlan.getPlanName());
         loanPlans.setLoanTypeId(loanPlan.getLoanTypeId());
@@ -91,47 +90,26 @@ public class LoanPlansService implements ILoanPlansService {
         loanPlans.setEMI(loanPlan.getEMI());
         loanPlans.setPlanValidity(loanPlan.getPlanValidity());
         loanPlans.setPlanAddedOn(loanPlan.getPlanAddedOn());
-        
+
         return loanPlansRepository.save(loanPlans);
-        
+
     }
 
     @Override
     public LoanPlans getLoanPlanById(int planid) throws ResourceNotFoundException {
-        LoanPlans loanPlans=null;
-        if(loanPlansRepository.findById(planid).isPresent()){
-            loanPlans=loanPlansRepository.findById(planid).get();
-        }
-        else{
+        LoanPlans loanPlans = null;
+        if (loanPlansRepository.findById(planid).isPresent()) {
+            loanPlans = loanPlansRepository.findById(planid).get();
+        } else {
             throw new ResourceNotFoundException("Loan Plan not found for this id :: " + planid);
         }
         return loanPlans;
-       
+
     }
 
     @Override
     public List<LoanPlans> getAllLoanPlans() {
-        List<LoanPlans> loanPlans=this.loanPlansRepository.findAll();
+        List<LoanPlans> loanPlans = this.loanPlansRepository.findAll();
         return loanPlans;
     }
-    
-    // public LoanPlans dtoToLoanPlans(LoanPlansDto loanPlan) {
-    //     return modelMapper.map(loanPlan, LoanPlans.class);
-    // }
-
-    // public LoanPlansDto loanPlansToDto(LoanPlans loanPlan) {
-    //     LoanPlansDto loanPlanDto = new LoanPlansDto();
-    //     loanPlanDto.setPlanId(loanPlan.getPlanId());
-    //     loanPlanDto.setPlanName(loanPlan.getPlanName());
-    //     loanPlanDto.setLoanTypeId(loanPlan.getLoanTypeId());
-    //     loanPlanDto.setPrincipalAmount(loanPlan.getPrincipalAmount());
-    //     loanPlanDto.setTenure(loanPlan.getTenure());
-    //     loanPlanDto.setInterestRate(loanPlan.getInterestRate());
-    //     loanPlanDto.setInterestAmount(loanPlan.getInterestAmount());
-    //     loanPlanDto.setTotalPayable(loanPlan.getTotalPayable());
-    //     loanPlanDto.setEMI(loanPlan.getEMI());
-    //     loanPlanDto.setPlanValidity(loanPlan.getPlanValidity());
-    //     loanPlanDto.setPlanAddedOn(loanPlan.getPlanAddedOn());
-    //     return loanPlanDto;
-    // }
 }

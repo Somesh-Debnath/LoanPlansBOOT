@@ -17,17 +17,15 @@ import com.somesh.loanplanmanagement.loanplans.dto.BaseInterestRatesDto;
 import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.service.IBaseInterestRatesService;
 
-import ch.qos.logback.core.model.Model;
-
-
 @RequestMapping("/api")
 @RestController
 public class BaseInterestRatesController {
-    Logger logger=LoggerFactory.getLogger(BaseInterestRatesController.class);
+    Logger logger = LoggerFactory.getLogger(BaseInterestRatesController.class);
     @Autowired
     private IBaseInterestRatesService baseInterestRatesService;
     @Autowired
     private ModelMapper modelMapper;
+
     @GetMapping(path = "/interestrates", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<BaseInterestRatesDto>> getAllBaseInterestRates() {
         List<BaseInterestRates> baseInterestRates = baseInterestRatesService.getAllBaseInterestRates();
@@ -36,10 +34,4 @@ public class BaseInterestRatesController {
         return new ResponseEntity<List<BaseInterestRatesDto>>(baseInterestRatesDto, HttpStatus.OK);
     }
 
-    // @PostMapping(path = "/interestrate")
-    // public ResponseEntity<BaseInterestRates> createBaseInterestRates(@RequestBody BaseInterestRates baseInterestRates) {
-    //     BaseInterestRates newBaseInterestRates = baseInterestRatesService.createBaseInterestRates(baseInterestRates);
-    //     System.out.println("newBaseInterestRates" + newBaseInterestRates);
-    //     return new ResponseEntity<BaseInterestRates>(newBaseInterestRates, HttpStatus.CREATED);
-    // }
 }

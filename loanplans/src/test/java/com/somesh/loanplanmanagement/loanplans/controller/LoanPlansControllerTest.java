@@ -1,88 +1,152 @@
 package com.somesh.loanplanmanagement.loanplans.controller;
 
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import com.somesh.loanplanmanagement.loanplans.dto.LoanPlansDto;
 import com.somesh.loanplanmanagement.loanplans.entity.LoanPlans;
-import com.somesh.loanplanmanagement.loanplans.service.LoanPlansService;
+import com.somesh.loanplanmanagement.loanplans.exception.ResourceNotFoundException;
+import com.somesh.loanplanmanagement.loanplans.service.ILoanPlansService;
 
-@WebMvcTest(LoanPlansController.class)
+@ExtendWith(MockitoExtension.class)
 public class LoanPlansControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
-    private LoanPlansService loanPlansService;
-    LoanPlans loanPlansOne;
-    LoanPlans loanPlansTwo;
-    List<LoanPlans> loanPlansList=new ArrayList<LoanPlans>();
+    @Mock
+    private ILoanPlansService loanPlansService;
+
+    @Mock
+    private ModelMapper modelMapper;
+
+    @InjectMocks
+    private LoanPlansController loanPlansController;
 
     @BeforeEach
-    public void setUp() {
-        loanPlansOne = new LoanPlans(1, "Home Loan", 1, 100000, 12, 8.5f, 8500, 108500, 9041.67f,
-                LocalDate.parse("2021-09-30"), LocalDate.parse("2023-09-30"));
-        loanPlansTwo = new LoanPlans(2, "Loan", 1, 100000, 12, 8.5f, 8500, 108500, 9041.67f,
-                LocalDate.parse("2021-09-30"), LocalDate.parse("2023-10-30"));
-        loanPlansList.add(loanPlansOne);
-        loanPlansList.add(loanPlansTwo);
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        loanPlansOne = null;
-        loanPlansTwo = null;
-        loanPlansList = null;
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testGetAllLoanPlans() throws Exception {
+    void testGetAllLoanPlans() {
+        LoanPlans loanPlan1 = new LoanPlans();
+        loanPlan1.setPlanId(1);
+        // Set other properties for loanPlan1
+
+        LoanPlans loanPlan2 = new LoanPlans();
+        loanPlan2.setPlanId(2);
+        // Set other properties for loanPlan2
+
+        LoanPlansDto loanPlanDto1 = new LoanPlansDto();
+        // Set properties for loanPlanDto1
+
+        LoanPlansDto loanPlanDto2 = new LoanPlansDto();
+        // Set properties for loanPlanDto2
+
+        List<LoanPlans> loanPlansList = Arrays.asList(loanPlan1, loanPlan2);
+        List<LoanPlansDto> loanPlansDtoList = Arrays.asList(loanPlanDto1, loanPlanDto2);
+
         when(loanPlansService.getAllLoanPlans()).thenReturn(loanPlansList);
-        mockMvc.perform(get("/api/v1/loanplans")).andExpect(status().isOk());
+        when(modelMapper.map(loanPlan1, LoanPlansDto.class)).thenReturn(loanPlanDto1);
+        when(modelMapper.map(loanPlan2, LoanPlansDto.class)).thenReturn(loanPlanDto2);
+
+        List<LoanPlansDto> result = loanPlansController.getAllLoanPlans();
+
+        // Assertions
+        // Verify the expected calls were made
+        verify(loanPlansService, times(1)).getAllLoanPlans();
+        verify(modelMapper, times(1)).map(loanPlan1, LoanPlansDto.class);
+        verify(modelMapper, times(1)).map(loanPlan2, LoanPlansDto.class);
+
+        // Verify the expected result
+        assertEquals(loanPlansDtoList, result);
     }
 
     @Test
-    public void testGetLoanPlanById() throws Exception {
-        when(loanPlansService.getLoanPlanById(1)).thenReturn(loanPlansOne);
-        mockMvc.perform(get("/api/v1/loanplans/1")).andExpect(status().isOk());
+    void testGetLoanPlansById() throws ResourceNotFoundException {
+        int planId = 1;
+
+        LoanPlans loanPlan = new LoanPlans();
+        loanPlan.setPlanId(planId);
+        // Set other properties for loanPlan
+
+        LoanPlansDto loanPlanDto = new LoanPlansDto();
+        // Set properties for loanPlanDto
+
+        when(loanPlansService.getLoanPlanById(planId)).thenReturn(loanPlan);
+        when(modelMapper.map(loanPlan, LoanPlansDto.class)).thenReturn(loanPlanDto);
+
+        ResponseEntity<LoanPlansDto> result = loanPlansController.getLoanPlansById(planId);
+
+        // Assertions
+        // Verify the expected calls were made
+        verify(loanPlansService, times(1)).getLoanPlanById(planId);
+        verify(modelMapper, times(1)).map(loanPlan, LoanPlansDto.class);
+
+        // Verify the expected result
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(loanPlanDto, result.getBody());
     }
 
     @Test
-    public void testGetLoanPlanByIdNotFound() throws Exception {
-        when(loanPlansService.getLoanPlanById(1)).thenReturn(loanPlansOne);
-        mockMvc.perform(get("/api/v1/loanplans/2")).andExpect(status().isNotFound());
+    void testCreateLoanPlans() throws Exception {
+        LoanPlansDto loanPlanDto = new LoanPlansDto();
+        // Set properties for loanPlanDto
+
+        LoanPlans loanPlan = new LoanPlans();
+        // Set properties for loanPlan
+
+        when(modelMapper.map(loanPlanDto, LoanPlans.class)).thenReturn(loanPlan);
+        when(loanPlansService.createLoanPlan(loanPlan)).thenReturn(loanPlan);
+        when(modelMapper.map(loanPlan, LoanPlansDto.class)).thenReturn(loanPlanDto);
+
+        ResponseEntity<LoanPlansDto> result = loanPlansController.createLoanPlans(loanPlanDto);
+
+        // Assertions
+        // Verify the expected calls were made
+        verify(modelMapper, times(1)).map(loanPlanDto, LoanPlans.class);
+        verify(loanPlansService, times(1)).createLoanPlan(loanPlan);
+        verify(modelMapper, times(1)).map(loanPlan, LoanPlansDto.class);
+
+        // Verify the expected result
+        assertEquals(HttpStatus.CREATED, result.getStatusCode());
+        assertEquals(loanPlanDto, result.getBody());
     }
 
     @Test
-    public void testAddLoanPlan() throws Exception {
-        when(loanPlansService.addLoanPlan(loanPlansOne)).thenReturn(loanPlansOne);
-        mockMvc.perform(post("/api/v1/loanplans").contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(loanPlansOne))).andExpect(status().isCreated());
-    }
+    void testUpdateLoanPlans() throws ResourceNotFoundException {
+        int planId = 1;
 
-    @Test
-    public void testUpdateLoanPlan() throws Exception {
-        when(loanPlansService.updateLoanPlan(loanPlansOne, 1)).thenReturn(loanPlansOne);
-        mockMvc.perform(put("/api/v1/loanplans/1").contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(loanPlansOne))).andExpect(status().isOk());
-    }
+        LoanPlansDto loanPlanDto = new LoanPlansDto();
+        // Set properties for loanPlanDto
 
-    @Test
-    public void testUpdateLoanPlanNotFound() throws Exception {
-        when(loanPlansService.updateLoanPlan(loanPlansOne, 1)).thenReturn(loanPlansOne);
-        mockMvc.perform(put("/api/v1/loanplans/2").contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(loanPlansOne))).andExpect(status().isNotFound());
-    }
+        LoanPlans loanPlan = new LoanPlans();
+        // Set properties for loanPlan
 
-    
-    
+        when(modelMapper.map(loanPlanDto, LoanPlans.class)).thenReturn(loanPlan);
+        when(loanPlansService.updateLoanPlan(loanPlan, planId)).thenReturn(loanPlan);
+        when(modelMapper.map(loanPlan, LoanPlansDto.class)).thenReturn(loanPlanDto);
+
+        ResponseEntity<LoanPlansDto> result = loanPlansController.updateLoanPlans(planId, loanPlanDto);
+
+        // Assertions
+        // Verify the expected calls were made
+        verify(modelMapper, times(1)).map(loanPlanDto, LoanPlans.class);
+        verify(loanPlansService, times(1)).updateLoanPlan(loanPlan, planId);
+        verify(modelMapper, times(1)).map(loanPlan, LoanPlansDto.class);
+
+        // Verify the expected result
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(loanPlanDto, result.getBody());
+    }
 }
