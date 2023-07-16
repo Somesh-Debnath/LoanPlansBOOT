@@ -1,122 +1,174 @@
 [
-  {
-    "_id": "fd4c151b-dcb7-4bb1-96c2-81b74f1247ac",
-    "colId": "history",
-    "containerId": "",
-    "name": "localhost:9090/api/interestrates",
-    "url": "localhost:9093/api/interestrates",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-06-09T15:16:45.814Z",
-    "modified": "2023-06-13T09:28:39.755Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "36eca8ff-2737-420f-bb7c-58393c06834a",
-    "colId": "history",
-    "containerId": "",
-    "name": "localhost:9090/api/loanplans",
-    "url": "localhost:9091/api/loanplans",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-06-09T15:18:37.091Z",
-    "modified": "2023-06-11T05:49:40.177Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "ce358c09-95a3-462f-be04-988b8e18dea4",
-    "colId": "history",
-    "containerId": "",
-    "name": "localhost:9090/api/loanplan",
-    "url": "localhost:9091/api/loanplan",
-    "method": "POST",
-    "sortNum": 0,
-    "created": "2023-06-09T15:34:57.213Z",
-    "modified": "2023-06-11T17:07:52.377Z",
-    "headers": [],
-    "params": [],
-    "body": {
-      "type": "json",
-      "raw": "\n{\n    \"planName\": \"Notun\",\n    \"loanTypeId\": 3,\n    \"principalAmount\": 100000,\n    \"tenure\": 10,\n    \"planValidity\": \"2024-09-30\"\n}",
-      "form": []
+    {
+        "_id": "fd4c151b-dcb7-4bb1-96c2-81b74f1247ac",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:9090/api/interestrates",
+        "url": "localhost:9093/api/interestrates",
+        "method": "GET",
+        "sortNum": 0,
+        "created": "2023-06-09T15:16:45.814Z",
+        "modified": "2023-06-13T09:28:39.755Z",
+        "headers": [],
+        "params": [],
+        "tests": []
     },
-    "tests": []
-  },
-  {
-    "_id": "d7b89196-a809-48f2-a54b-9cfaa4d6d515",
-    "colId": "history",
-    "containerId": "",
-    "name": "localhost:9090/api/loanplans/1",
-    "url": "localhost:9091/api/loanplans/{planid}",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-06-09T15:51:07.131Z",
-    "modified": "2023-06-10T14:58:06.390Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "planid",
-        "value": "1",
-        "isPath": true
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "2c1864f0-8cec-4d00-92a4-ab96c0261eb4",
-    "colId": "history",
-    "containerId": "",
-    "name": "localhost:9090/api/loanplan/1",
-    "url": "localhost:9091/api/loanplans/{planid}",
-    "method": "PUT",
-    "sortNum": 0,
-    "created": "2023-06-09T15:51:57.540Z",
-    "modified": "2023-06-10T14:58:38.276Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "planid",
-        "value": "1",
-        "isPath": true
-      }
-    ],
-    "body": {
-      "type": "json",
-      "raw": "{\n    \"planName\": \"abcd\",\n    \"loanTypeId\": 2,\n    \"principalAmount\": 1000,\n    \"tenure\": 11,\n    \"planValidity\": \"2023-09-30\"\n      }",
-      "form": []
+    {
+        "_id": "36eca8ff-2737-420f-bb7c-58393c06834a",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:9090/api/loanplans",
+        "url": "localhost:9093/auth/login",
+        "method": "POST",
+        "sortNum": 0,
+        "created": "2023-06-09T15:18:37.091Z",
+        "modified": "2023-07-14T14:02:56.473Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "json",
+            "raw": "{\n  \"email\":\"somesh\",\n  \"password\":1234\n}",
+            "form": []
+        },
+        "tests": []
     },
-    "tests": []
-  },
-  {
-    "_id": "82e0b88d-011c-4ae3-88fe-7fe4b23f7f27",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:9091/v2/api-docs",
-    "url": "http://localhost:9093/v3/api-docs",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-06-11T11:38:43.834Z",
-    "modified": "2023-06-17T05:06:02.244Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  },
-  {
-    "_id": "fcade515-68f8-442b-be27-ec46eeeda067",
-    "colId": "history",
-    "containerId": "",
-    "name": "http://localhost:9091/swagger-ui.html",
-    "url": "http://localhost:9091/swagger-ui.html",
-    "method": "GET",
-    "sortNum": 0,
-    "created": "2023-06-12T15:17:30.563Z",
-    "modified": "2023-06-12T15:17:30.563Z",
-    "headers": [],
-    "params": [],
-    "tests": []
-  }
+    {
+        "_id": "ce358c09-95a3-462f-be04-988b8e18dea4",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:9090/api/loanplan",
+        "url": "localhost:9093/api/loanplan",
+        "method": "POST",
+        "sortNum": 0,
+        "created": "2023-06-09T15:34:57.213Z",
+        "modified": "2023-07-11T13:16:38.943Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "json",
+            "raw": "\n{\n    \"planName\": \"Another Plan\",\n    \"loanTypeId\": 2,\n    \"principalAmount\": 1000,\n    \"tenure\": 12,\n    \"planValidity\": \"2034-09-22\"\n}",
+            "form": []
+        },
+        "tests": []
+    },
+    {
+        "_id": "d7b89196-a809-48f2-a54b-9cfaa4d6d515",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:9090/api/loanplans/1",
+        "url": "localhost:9093/api/loanplans",
+        "method": "GET",
+        "sortNum": 0,
+        "created": "2023-06-09T15:51:07.131Z",
+        "modified": "2023-07-15T11:05:23.347Z",
+        "headers": [],
+        "params": [],
+        "tests": []
+    },
+    {
+        "_id": "2c1864f0-8cec-4d00-92a4-ab96c0261eb4",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:9090/api/loanplan/1",
+        "url": "localhost:9091/api/loanplans/{planid}",
+        "method": "PUT",
+        "sortNum": 0,
+        "created": "2023-06-09T15:51:57.540Z",
+        "modified": "2023-06-10T14:58:38.276Z",
+        "headers": [],
+        "params": [
+            {
+                "name": "planid",
+                "value": "1",
+                "isPath": true
+            }
+        ],
+        "body": {
+            "type": "json",
+            "raw": "{\n    \"planName\": \"abcd\",\n    \"loanTypeId\": 2,\n    \"principalAmount\": 1000,\n    \"tenure\": 11,\n    \"planValidity\": \"2023-09-30\"\n      }",
+            "form": []
+        },
+        "tests": []
+    },
+    {
+        "_id": "82e0b88d-011c-4ae3-88fe-7fe4b23f7f27",
+        "colId": "history",
+        "containerId": "",
+        "name": "http://localhost:9091/v2/api-docs",
+        "url": "http://localhost:9093/v3/api-docs",
+        "method": "GET",
+        "sortNum": 0,
+        "created": "2023-06-11T11:38:43.834Z",
+        "modified": "2023-06-17T05:06:02.244Z",
+        "headers": [],
+        "params": [],
+        "tests": []
+    },
+    {
+        "_id": "fcade515-68f8-442b-be27-ec46eeeda067",
+        "colId": "history",
+        "containerId": "",
+        "name": "http://localhost:9091/swagger-ui.html",
+        "url": "http://localhost:9091/swagger-ui.html",
+        "method": "GET",
+        "sortNum": 0,
+        "created": "2023-06-12T15:17:30.563Z",
+        "modified": "2023-06-12T15:17:30.563Z",
+        "headers": [],
+        "params": [],
+        "tests": []
+    },
+    {
+        "_id": "0a6a9969-b479-40af-b32f-4fd9f7ff95a8",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:9093/auth/register",
+        "url": "localhost:9093/auth/register",
+        "method": "POST",
+        "sortNum": 0,
+        "created": "2023-07-14T15:07:05.751Z",
+        "modified": "2023-07-14T20:29:14.490Z",
+        "headers": [
+            {
+                "name": "Accept",
+                "value": "*/*",
+                "isDisabled": true
+            },
+            {
+                "name": "User-Agent",
+                "value": "Thunder Client (https://www.thunderclient.com)",
+                "isDisabled": true
+            }
+        ],
+        "params": [],
+        "body": {
+            "type": "json",
+            "raw": "{\n \"email\":\"somesh@ma.com\",\n \"password\": 654\n}",
+            "form": []
+        },
+        "tests": []
+    },
+    {
+        "_id": "3db0c71a-eb8b-482a-bedc-4f9ec58b3413",
+        "colId": "history",
+        "containerId": "",
+        "name": "localhost:9093/auth/register",
+        "url": "localhost:9093/auth/users",
+        "method": "GET",
+        "sortNum": 0,
+        "created": "2023-07-14T15:07:09.529Z",
+        "modified": "2023-07-14T20:31:35.922Z",
+        "headers": [],
+        "params": [],
+        "body": {
+            "type": "json",
+            "raw": "{\n \"email\":\"somesh@ma.com\",\n \"password\": 654\n}",
+            "form": []
+        },
+        "auth": {
+            "type": "bearer",
+            "bearer": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzb21lc2hAbWEuY29tIiwiaWF0IjoxNjg5MzY2NTk5LCJleHAiOjE2ODkzODQ1OTl9.-xTaB9M-Q2I-xchlwx37P3j1jWOuVzJ5Jfn1-pGFL1lAc62LqAbBKQvqQbjtP9w_RQV---hepL-SJIm85t0Itw"
+        },
+        "tests": []
+    }
 ]

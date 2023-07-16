@@ -30,7 +30,6 @@ public class BaseInterestRatesServiceTest {
         autoCloseable = MockitoAnnotations.openMocks(this);
         baseInterestRatesService = new BaseInterestRatesService(baseInterestRatesRepository);
         baseInterestRates = new BaseInterestRates(1, "Home", 8.5f);
-        System.out.println(baseInterestRates);
     }
 
     @AfterEach

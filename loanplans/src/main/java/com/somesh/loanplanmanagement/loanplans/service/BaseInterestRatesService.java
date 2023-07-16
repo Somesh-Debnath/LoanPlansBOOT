@@ -9,20 +9,18 @@ import com.somesh.loanplanmanagement.loanplans.entity.BaseInterestRates;
 import com.somesh.loanplanmanagement.loanplans.repository.BaseInterestRatesRepository;
 
 @Service
-public class BaseInterestRatesService implements IBaseInterestRatesService{
-@Autowired
+public class BaseInterestRatesService implements IBaseInterestRatesService {
+    @Autowired
     private BaseInterestRatesRepository baseInterestRatesRepository;
-    
+
     public BaseInterestRatesService(BaseInterestRatesRepository baseInterestRatesRepository) {
         super();
         this.baseInterestRatesRepository = baseInterestRatesRepository;
     }
+
     @Override
     public List<BaseInterestRates> getAllBaseInterestRates() {
-       return baseInterestRatesRepository.findAll();
+        return baseInterestRatesRepository.findAll();
     }
-    // @Override
-    // public BaseInterestRates createBaseInterestRates(BaseInterestRates baseInterestRates) {
-    //     return baseInterestRatesRepository.save(baseInterestRates);
-    // }
+
 }
