@@ -41,12 +41,12 @@
         "method": "POST",
         "sortNum": 0,
         "created": "2023-06-09T15:34:57.213Z",
-        "modified": "2023-07-11T13:16:38.943Z",
+        "modified": "2023-07-17T10:09:37.485Z",
         "headers": [],
         "params": [],
         "body": {
             "type": "json",
-            "raw": "\n{\n    \"planName\": \"Another Plan\",\n    \"loanTypeId\": 2,\n    \"principalAmount\": 1000,\n    \"tenure\": 12,\n    \"planValidity\": \"2034-09-22\"\n}",
+            "raw": "\n{\n    \n    \"loanTypeId\": 2,\n    \"principalAmount\": 1000,\n    \"tenure\": 12,\n    \"planValidity\": \"2034-09-22\"\n}",
             "form": []
         },
         "tests": []
@@ -127,7 +127,7 @@
         "method": "POST",
         "sortNum": 0,
         "created": "2023-07-14T15:07:05.751Z",
-        "modified": "2023-07-14T20:29:14.490Z",
+        "modified": "2023-07-17T13:46:01.926Z",
         "headers": [
             {
                 "name": "Accept",
@@ -143,7 +143,7 @@
         "params": [],
         "body": {
             "type": "json",
-            "raw": "{\n \"email\":\"somesh@ma.com\",\n \"password\": 654\n}",
+            "raw": "{\n  \"username\":\"zdghffgsd\",\n \"email\":\"somcghcezcvsh@maill.com\",\n \"password\": 654\n}",
             "form": []
         },
         "tests": []
