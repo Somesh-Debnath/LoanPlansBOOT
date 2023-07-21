@@ -19,4 +19,8 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    //insert values into role table in sql
+    //insert into role(name) values('Admin');
+    //insert into role(name) values('User');
 }

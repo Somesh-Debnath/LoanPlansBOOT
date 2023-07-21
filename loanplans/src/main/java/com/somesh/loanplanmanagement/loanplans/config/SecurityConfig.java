@@ -43,6 +43,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/loanplans/{planid}").permitAll()
                                 .requestMatchers("/api/loanplan").permitAll()
                                 .requestMatchers("/api/interestrates").permitAll()
+                                .requestMatchers("/auth/**").permitAll()
                                 .anyRequest().authenticated())
                 .exceptionHandling(ex->ex.authenticationEntryPoint(point))
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

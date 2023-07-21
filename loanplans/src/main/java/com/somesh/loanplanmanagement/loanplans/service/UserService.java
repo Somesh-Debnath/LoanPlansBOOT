@@ -1,9 +1,12 @@
 package com.somesh.loanplanmanagement.loanplans.service;
 
+import java.rmi.server.UID;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,12 +19,16 @@ import org.springframework.stereotype.Service;
 
 import com.somesh.loanplanmanagement.loanplans.entity.Role;
 import com.somesh.loanplanmanagement.loanplans.entity.User;
+import com.somesh.loanplanmanagement.loanplans.repository.RoleRepository;
 import com.somesh.loanplanmanagement.loanplans.repository.UserRepository;
 
 @Service
-public class UserService implements IUserService, UserDetailsService {
+public class UserService implements IUserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     private UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -36,22 +43,39 @@ public class UserService implements IUserService, UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
-    public User saveUser(User user) {
-        User nUser = new User();
-        nUser.setPassword(bcryptEncoder.encode(user.getPassword()));
+    public void initRoleAndUser() {
 
-        Role role = roleService.findByName("USER");
-        Set<Role> roleSet = new HashSet<>();
-        roleSet.add(role);
+        Role adminRole = new Role();
+        adminRole.setName("Admin");
+        roleRepository.save(adminRole);
 
-        if(nUser.getEmail().split("@")[1].equals("admin.edu")){
-            role = roleService.findByName("ADMIN");
-            roleSet.add(role);
+        Role userRole = new Role();
+        userRole.setName("User");
+        roleRepository.save(userRole);
+
+        User adminUser = new User();
+        adminUser.setName("Admin");
+        adminUser.setEmail("admin@edu");
+        adminUser.setPassword(bcryptEncoder.encode("admin"));
+        Set<Role> adminRoles = new HashSet<>();
+        adminRoles.add(adminRole);
+        adminUser.setRoles(adminRoles);
+        userRepository.save(adminUser);
     }
-    nUser.setRoles(roleSet);
-    return userRepository.save(nUser);
-}
+
+    @Override
+    public User saveUser(User user, String name ) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        Role role = roleRepository.findRoleByName(name);
+        if (role == null) {
+            throw new IllegalArgumentException("Invalid role name: " + name);
+        }
+
+        user.setRoles(Collections.singleton(role));
+        return userRepository.save(user);
+    }
+
 
     @Override
     public User fetchUserByEmail(String email) {
@@ -73,15 +97,5 @@ public class UserService implements IUserService, UserDetailsService {
         });
         return authorities;
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if(user == null){
-            throw new UsernameNotFoundException("Invalid username or password.");
-        }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
-    }
-
 
 }

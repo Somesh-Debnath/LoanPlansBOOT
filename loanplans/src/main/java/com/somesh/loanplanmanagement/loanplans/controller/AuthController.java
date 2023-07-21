@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,11 @@ import com.somesh.loanplanmanagement.loanplans.entity.JwtRequest;
 import com.somesh.loanplanmanagement.loanplans.entity.JwtResponse;
 import com.somesh.loanplanmanagement.loanplans.entity.User;
 import com.somesh.loanplanmanagement.loanplans.security.JwtHelper;
+import com.somesh.loanplanmanagement.loanplans.service.CustomUserDetailsService;
+import com.somesh.loanplanmanagement.loanplans.service.RoleService;
 import com.somesh.loanplanmanagement.loanplans.service.UserService;
+
+import jakarta.annotation.PostConstruct;
 
 @RestController
 @RequestMapping("/auth")
@@ -41,10 +46,20 @@ public class AuthController {
     private UserService userService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private JwtHelper helper;
+
+    @Autowired
+    private CustomUserDetailsService Custom;
 
     private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
+    // @PostConstruct
+    // public void initRoleAndUser(){
+    //     userService.initRoleAndUser();
+    // }
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
@@ -78,15 +93,30 @@ public class AuthController {
     public String exceptionHandler() {
         return "Credentials Invalid !!";
     }
-
     @PostMapping("/register")
     public User createUser(@RequestBody User user) {
-        return userService.saveUser(user);
-    }
+        return userService.saveUser(user, user.getName());
+    }    
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+
+    @GetMapping("/roles")
+    public List<com.somesh.loanplanmanagement.loanplans.entity.Role> getAllRoles() {
+        return roleService.getAllRoles();
+    }
+
+    @GetMapping("/role/{name}")
+    public com.somesh.loanplanmanagement.loanplans.entity.Role getRoleByName(@PathVariable String name) {
+        return roleService.findByName(name);
+    }
+
+    @GetMapping("/user/{email}")    
+    public UserDetails getUserByEmail(@PathVariable String email) {
+        return Custom.loadUserByUsername(email);
+    }
+
 }
 
