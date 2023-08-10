@@ -60,13 +60,19 @@
         "colId": "history",
         "containerId": "",
         "name": "localhost:9090/api/loanplans/1",
-        "url": "localhost:9093/api/loanplans",
+        "url": "localhost:9093/api/loanplans/{planId}",
         "method": "GET",
         "sortNum": 0,
         "created": "2023-06-09T15:51:07.131Z",
-        "modified": "2023-07-15T11:05:23.347Z",
+        "modified": "2023-07-23T19:09:20.809Z",
         "headers": [],
-        "params": [],
+        "params": [
+            {
+                "name": "planId",
+                "value": "4",
+                "isPath": true
+            }
+        ],
         "tests": []
     },
     {
@@ -74,23 +80,21 @@
         "colId": "history",
         "containerId": "",
         "name": "localhost:9090/api/loanplan/1",
-        "url": "localhost:9091/api/loanplans/{planid}",
+        "url": "localhost:9093/api/loanplan/1",
         "method": "PUT",
         "sortNum": 0,
         "created": "2023-06-09T15:51:57.540Z",
-        "modified": "2023-06-10T14:58:38.276Z",
+        "modified": "2023-07-24T05:27:45.966Z",
         "headers": [],
-        "params": [
-            {
-                "name": "planid",
-                "value": "1",
-                "isPath": true
-            }
-        ],
+        "params": [],
         "body": {
             "type": "json",
-            "raw": "{\n    \"planName\": \"abcd\",\n    \"loanTypeId\": 2,\n    \"principalAmount\": 1000,\n    \"tenure\": 11,\n    \"planValidity\": \"2023-09-30\"\n      }",
+            "raw": "{\n  \n\"planName\"\n: \n\"New \",\n\"planValidity\"\n: \n\"2023-07-19\"\n}",
             "form": []
+        },
+        "auth": {
+            "type": "bearer",
+            "bearer": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzb2hAbXNkYWlsbC5jb20iLCJpYXQiOjE2OTAxMzc5ODMsImV4cCI6MTY5MDE1NTk4M30.caY4IrReXdmt8Z7lRqmcn9Etpk6aVVAM8xfacC_vJjNOdXztJLbc96-R9yTc_uLI_-mLaPcg329zwXSk7pRU4Q"
         },
         "tests": []
     },
@@ -248,11 +252,11 @@
         "colId": "history",
         "containerId": "",
         "name": "localhost:9093/auth/user/soh@msdcvadsgill.com",
-        "url": "localhost:9093/auth/user/soh@msdcvadsgill.com",
+        "url": "localhost:9093/auth/user/newAdmin@mail.com",
         "method": "GET",
         "sortNum": 0,
         "created": "2023-07-20T15:37:40.794Z",
-        "modified": "2023-07-20T15:37:57.692Z",
+        "modified": "2023-07-23T19:55:44.178Z",
         "headers": [],
         "params": [],
         "auth": {

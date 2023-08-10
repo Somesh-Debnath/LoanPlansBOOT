@@ -62,11 +62,11 @@ public class LoanPlansController {
         return new ResponseEntity<LoanPlansDto>(loanPlanResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "/loanplans/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<LoanPlansDto> updateLoanPlans(@PathVariable(value = "id") int planid,
+    @PutMapping(path = "/loanplan/{planId}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<LoanPlansDto> updateLoanPlans(@PathVariable int planId,
             @Valid @RequestBody LoanPlansDto loanPlansDto) throws ResourceNotFoundException {
         LoanPlans loanPlan = modelMapper.map(loanPlansDto, LoanPlans.class);
-        LoanPlans loanPlanRequest = loanPlansService.updateLoanPlan(loanPlan, planid);
+        LoanPlans loanPlanRequest = loanPlansService.updateLoanPlan(loanPlan, planId);
         LoanPlansDto loanPlanResponse = modelMapper.map(loanPlanRequest, LoanPlansDto.class);
         logger.info("Loan Plan updated successfully");
         return new ResponseEntity<LoanPlansDto>(loanPlanResponse, HttpStatus.OK);
